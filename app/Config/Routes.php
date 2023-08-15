@@ -35,7 +35,7 @@ $routes->get('/registration', 'Crudcontroller::index');    //register screen
 $routes->post('/register-user', 'Crudcontroller::save');   //save user
 $routes->get('/login', 'Crudcontroller::showLogin');    //login screen
 $routes->post('/login-user', 'Crudcontroller::login');    //login user
-$routes->post('/logout', 'Crudcontroller::logout');    //logout user
+$routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
 // loggedin screens
 $routes->get('/users-list', 'Crudcontroller::fetchUsers', ['as' => 'list-users']);    //show registered users

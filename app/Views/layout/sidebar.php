@@ -15,6 +15,27 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css" rel="stylesheet" />
+
+    <script>
+        // Add event listener to reset the timeout on any user interaction
+        document.addEventListener('mousemove', function () {
+            // Remove the previous form if any
+            const existingForm = document.querySelector('form');
+            if (existingForm) {
+                existingForm.remove();
+            }
+            logoutAfterInactivity();
+        });
+
+        document.addEventListener('keypress', function () {
+            // Remove the previous form if any
+            const existingForm = document.querySelector('form');
+            if (existingForm) {
+                existingForm.remove();
+            }
+            logoutAfterInactivity();
+        });
+    </script>
 </head>
 
 <body>
@@ -108,8 +129,12 @@
     <!--Main Navigation-->
 
     <!--Main layout-->
-    <main style="margin-top: 58px;">
+    <main>
         <div class="container pt-4"></div>
+
+        <div class="content">
+            <?= $this->renderSection('content'); ?>
+        </div>
     </main>
     <!--Main layout-->
 

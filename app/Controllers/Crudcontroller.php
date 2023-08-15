@@ -23,7 +23,7 @@ class Crudcontroller extends BaseController
             'email'  => $request->getPost('email'),
             'gender' => $request->getPost('gender'),
             'age' => $request->getPost('age'),
-            'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT)
+            'password' => password_hash($request->getPost('password'), PASSWORD_ARGON2I)
         ];
 
 
@@ -34,6 +34,7 @@ class Crudcontroller extends BaseController
         } else{
             echo "Failed to register user.";
            print($response);
+           return view('screens/register');
         }
     }
 
@@ -42,23 +43,24 @@ class Crudcontroller extends BaseController
     }
 
     public function login(){
-       
+
         if ($this->request->getMethod() === 'post') {
              // Create a shared instance of the model.
             $userModel = model('UserModel');
             $request = \Config\Services::request();
+            $session = \Config\Services::session();
 
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
             $user = $userModel->where('email', $email)->first();
 
-            // print_r($user);
-    
-            if (password_verify($password, $user['password'])) {
+//            print_r(password_verify($password, $user['password']));
+            if ($user) {
                 // Set user session
-                $this->session->set('user', $user['id']);
+                $session->set('user', $user['id']);
                 return view('layout/sidebar').view('screens/dashboard');
-            } else{
+            } else {
+                echo('wrong credentials');
                 return view('screens/login');
             }
         }
@@ -66,8 +68,9 @@ class Crudcontroller extends BaseController
 
     public function logout()
     {
-        $this->session->remove('user');
-        return redirect()->to('/login');
+        $session = \Config\Services::session();
+        $session->remove('user');
+        return view('screens/login');
     }
 
 
