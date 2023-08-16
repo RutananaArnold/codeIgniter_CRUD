@@ -44,7 +44,7 @@ class Crudcontroller extends BaseController
 
     public function login(){
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->is('post')) {
              // Create a shared instance of the model.
             $userModel = model('UserModel');
             $request = \Config\Services::request();
@@ -58,11 +58,12 @@ class Crudcontroller extends BaseController
             if ($user) {
                 // Set user session
                 $session->set('user', $user['id']);
-                return view('layout/sidebar').view('screens/dashboard');
+                return view('layout/sidebar');
             } else {
                 echo('wrong credentials');
                 return view('screens/login');
             }
+//            return view('layout/sidebar').view('screens/dashboard');
         }
     }
 

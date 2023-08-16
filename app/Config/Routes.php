@@ -1,6 +1,8 @@
 <?php
 
 namespace Config;
+use App\Controllers\Crudcontroller;
+use App\Controllers\PageController;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -32,9 +34,9 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 // Auth
 $routes->get('/registration', 'Crudcontroller::index');    //register screen
-$routes->post('/register-user', 'Crudcontroller::save');   //save user
+$routes->match(['get', 'post'], 'register-user', [Crudcontroller::class, 'save']);  //save user
 $routes->get('/login', 'Crudcontroller::showLogin');    //login screen
-$routes->post('/login-user', 'Crudcontroller::login');    //login user
+$routes->match(['get', 'post'], 'login-user', [Crudcontroller::class, 'login']);  //login user
 $routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
 // loggedin screens

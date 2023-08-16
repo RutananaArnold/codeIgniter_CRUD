@@ -97,4 +97,10 @@ class Autoload extends AutoloadConfig
      * @phpstan-var list<string>
      */
     public $helpers = [];
+
+    // Add the 'url' helper
+//    public $aliases = [
+//            // ... Other aliases
+//        'url' => CodeIgniter\HTTP\URI::class,
+//        ];
 }
