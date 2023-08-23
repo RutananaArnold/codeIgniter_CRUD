@@ -2,11 +2,49 @@
 
 <?= $this->section('content'); ?>
 
-<div id="content">
-    <h1>Welcome</h1>
-    <p>This is the main users area.</p>
-</div>
-<!-- Dashboard content goes here -->
+<div class="pagetitle">
+    <h1>Users</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Users</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<?php $pager = \Config\Services::pager(); ?>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <th>No</th>
+                <th>Full Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+
+            <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td></td>
+                        <td><?= esc($user['name']) ?></td>
+                        <td><?= esc($user['age']) ?> </td>
+                        <td><?= esc($user['gender']) ?> </td>
+                        <td><?= esc($user['email']) ?> </td>
+                        <td>
+                            <a href="/edit-user/<?= esc($user['id']) ?>" class="btn btn-outline-warning btn-sm" style="width: 6em;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                            <a href="#" class="btn btn btn-outline-danger btn-outline btn-sm" style="width: 6em;"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                        </td>
+                    </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+
+<?= $pager->links() ?>
+
 <?= $this->endSection(); ?>
 
 

@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Controllers;
-use CodeIgniter\HTTP\RequestInterface;
-
+use Config\Services;
 
 class Crudcontroller extends BaseController
 {
@@ -16,14 +15,13 @@ class Crudcontroller extends BaseController
     public function save() : string {
         // Create a shared instance of the model.
         $userModel = model('UserModel');
-        $request = \Config\Services::request();
-        
+
         $data = [
-            'name' => $request->getPost('username'),
-            'email'  => $request->getPost('email'),
-            'gender' => $request->getPost('gender'),
-            'age' => $request->getPost('age'),
-            'password' => password_hash($request->getPost('password'), PASSWORD_ARGON2I)
+            'name' => $this->request->getPost('username'),
+            'email'  => $this->request->getPost('email'),
+            'gender' => $this->request->getPost('gender'),
+            'age' => $this->request->getPost('age'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_ARGON2I)
         ];
 
 
@@ -47,23 +45,20 @@ class Crudcontroller extends BaseController
         if ($this->request->is('post')) {
              // Create a shared instance of the model.
             $userModel = model('UserModel');
-            $request = \Config\Services::request();
             $session = \Config\Services::session();
 
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
             $user = $userModel->where('email', $email)->first();
 
-//            print_r(password_verify($password, $user['password']));
             if ($user) {
                 // Set user session
                 $session->set('user', $user['id']);
-                return view('layout/sidebar');
+                return redirect()->to('/dashboard-view', null, 'refresh');
             } else {
                 echo('wrong credentials');
                 return view('screens/login');
             }
-//            return view('layout/sidebar').view('screens/dashboard');
         }
     }
 
@@ -80,20 +75,65 @@ class Crudcontroller extends BaseController
          // Create a shared instance of the model.
          $userModel = model('UserModel');
         //  dump($userModel);
-         $allUsers = $userModel->findAll();
+         $allUsers = [
+            'users' => $userModel->paginate(10),
+             'pager' => $userModel->pager,
+         ];
          return view('screens/users_screen', $allUsers);
     }
 
+    public function showEditUser($userId)
+    {
+        // Create a shared instance of the model.
+        $userModel = model('UserModel');
+        $user = $userModel->find($userId);
+        if(is_null($user)){
+            return redirect()->back();
+        }
 
-    //     $db = db_connect();
-    //    $pQuery = $db->prepare(static function ($db) {
-    //     return $db->table('users')->insert([
-    //         'name' => $this->input->post('username'),
-    //         'email'  => $this->input->post('email'),
-    //         'gender' => $ths->input->post('gender'),
-    //         'age' => $this->input->post('age'),
-    //         'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
-    //     ]);
-    // });
+        return view('screens/edit_user', ['user' => $user]);
+    }
+
+    public function updateUser(){
+        if (! $this->request->is('post')) {
+            return redirect()->back();
+        }
+
+        $rules =[
+            'user_id' => 'required',
+            'name' => 'required',
+            'age' => 'required',
+            'email' => 'required|valid_email',
+            'password' => 'min_length[6]',
+            'password_confirmation' => 'matches[password]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back();   //redirect with error message
+        }
+
+        // Create a shared instance of the model.
+        $userModel = model('UserModel');
+        $id = $this->request->getPost('user_id');
+        $name = $this->request->getPost('name');
+        $age = $this->request->getPost('age');
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+
+        $user = [
+            'name' =>  $name,
+            'email'  => $email,
+            'age' => $age,
+            'password' => $password
+        ];
+
+        try {
+            $response = $userModel->update($id, $user);
+        } catch (\ReflectionException $e) {
+            return redirect()->back()->with('foo', 'message');
+        }
+        return redirect()->back()->with('success', 'User detail updated successfully');   //success with a success message
+    }
+
 
 }

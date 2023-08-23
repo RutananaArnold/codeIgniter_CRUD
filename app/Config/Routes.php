@@ -31,7 +31,8 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Crudcontroller::showLogin');
+
 // Auth
 $routes->get('/registration', 'Crudcontroller::index');    //register screen
 $routes->match(['get', 'post'], 'register-user', [Crudcontroller::class, 'save']);  //save user
@@ -40,7 +41,9 @@ $routes->match(['get', 'post'], 'login-user', [Crudcontroller::class, 'login']);
 $routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
 // loggedin screens
-$routes->get('/users-list', 'Crudcontroller::fetchUsers', ['as' => 'list-users']);    //show registered users
+$routes->get('/users-list', 'Crudcontroller::fetchUsers');    //show registered users
+$routes->get('/edit-user/(:num)', 'Crudcontroller::showEditUser/$1');    //show edit user screen
+$routes->post('/update-user', 'Crudcontroller::updateUser');    //update user details
 $routes->get('/nav-sidebar', 'PageController::sideBar');
 $routes->get('/dashboard-view', 'PageController::showDashboard');
 
