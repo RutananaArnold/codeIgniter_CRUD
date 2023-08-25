@@ -18,6 +18,18 @@
     </div>
 
     <br>
+        <?php if (session()->has('success')) : ?>
+            <div class="alert alert-success">
+                <?= session('success') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (session()->has('error')) : ?>
+            <div class="alert alert-danger">
+                <?= session('error') ?>
+            </div>
+        <?php endif; ?>
+
     <form action="/update-user" method="POST" class="form">
         <!-- Adding CSRF token field -->
         <?= csrf_field() ?>

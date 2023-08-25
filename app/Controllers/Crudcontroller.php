@@ -104,12 +104,12 @@ class Crudcontroller extends BaseController
             'name' => 'required',
             'age' => 'required',
             'email' => 'required|valid_email',
-            'password' => 'min_length[6]',
+            'password' => 'min_length[5]',
             'password_confirmation' => 'matches[password]',
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back();   //redirect with error message
+            return redirect()->back()->with('error', 'Validation failed. Please check your input.');   //redirect with error message
         }
 
         // Create a shared instance of the model.
@@ -128,12 +128,38 @@ class Crudcontroller extends BaseController
         ];
 
         try {
-            $response = $userModel->update($id, $user);
+            $userModel->update($id, $user);
         } catch (\ReflectionException $e) {
-            return redirect()->back()->with('foo', 'message');
+            return redirect()->back()->with('error', 'An error occurred while updating user details. Please try again.');
         }
         return redirect()->back()->with('success', 'User detail updated successfully');   //success with a success message
     }
 
+    public function showDeletePage($userId){
+        // Create a shared instance of the model.
+        $userModel = model('UserModel');
+        $user = $userModel->find($userId);
+        if(is_null($user)){
+            return redirect()->back();
+        }
+        return view('screens/delete_user', ['user' => $user]);
+    }
 
+    public function deleteUser(){
+        $userId = $this->request->getPost('user_id');
+        // Create a shared instance of the model.
+        $userModel = model('UserModel');
+        $user = $userModel->find($userId);
+        if(is_null($user)){
+            return redirect()->back();
+        }
+
+        try {
+            $userModel->delete($user['id']);
+        } catch (\ReflectionException $e) {
+            return redirect()->back()->with('error', 'An error occurred while deleting user details. Please try again.');
+        }
+
+        return view('screens/success');   //success with a success message
+    }
 }

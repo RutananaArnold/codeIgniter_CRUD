@@ -14,6 +14,18 @@
 
 <?php $pager = \Config\Services::pager(); ?>
 
+        <?php if (session()->has('success')) : ?>
+            <div class="alert alert-success">
+                <?= session('success') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (session()->has('error')) : ?>
+            <div class="alert alert-danger">
+                <?= session('error') ?>
+            </div>
+        <?php endif; ?>
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
             <thead>
@@ -30,12 +42,12 @@
                     <tr>
                         <td></td>
                         <td><?= esc($user['name']) ?></td>
-                        <td><?= esc($user['age']) ?> </td>
                         <td><?= esc($user['gender']) ?> </td>
+                        <td><?= esc($user['age']) ?> </td>
                         <td><?= esc($user['email']) ?> </td>
                         <td>
                             <a href="/edit-user/<?= esc($user['id']) ?>" class="btn btn-outline-warning btn-sm" style="width: 6em;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-                            <a href="#" class="btn btn btn-outline-danger btn-outline btn-sm" style="width: 6em;"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                            <a href="/delete-screen/<?= esc($user['id']) ?>" class="btn btn btn-outline-danger btn-outline btn-sm" style="width: 6em;"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                         </td>
                     </tr>
             <?php endforeach ?>

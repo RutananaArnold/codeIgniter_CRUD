@@ -36,14 +36,22 @@ $routes->get('/', 'Crudcontroller::showLogin');
 // Auth
 $routes->get('/registration', 'Crudcontroller::index');    //register screen
 $routes->match(['get', 'post'], 'register-user', [Crudcontroller::class, 'save']);  //save user
+
 $routes->get('/login', 'Crudcontroller::showLogin');    //login screen
 $routes->match(['get', 'post'], 'login-user', [Crudcontroller::class, 'login']);  //login user
+
 $routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
-// loggedin screens
-$routes->get('/users-list', 'Crudcontroller::fetchUsers');    //show registered users
+
+// logged in screens
+$routes->get('/users-list', 'Crudcontroller::fetchUsers');    //display registered users
+
 $routes->get('/edit-user/(:num)', 'Crudcontroller::showEditUser/$1');    //show edit user screen
 $routes->post('/update-user', 'Crudcontroller::updateUser');    //update user details
+
+$routes->get('/delete-screen/(:num)', 'Crudcontroller::showDeletePage/$1');    //show delete user screen
+$routes->post('/delete-user', 'Crudcontroller::deleteUser');    //delete user
+
 $routes->get('/nav-sidebar', 'PageController::sideBar');
 $routes->get('/dashboard-view', 'PageController::showDashboard');
 
