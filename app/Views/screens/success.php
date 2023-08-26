@@ -3,6 +3,19 @@
 
 <?= $this->section('content'); ?>
 
+    <br>
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success">
+            <?= session('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('error')) : ?>
+        <div class="alert alert-danger">
+            <?= session('error') ?>
+        </div>
+    <?php endif; ?>
+
 <div class="d-flex justify-content-center align-items-center">
     <div class="col-md-4">
         <div class="border border-3 border-success"></div>

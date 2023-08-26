@@ -53,7 +53,7 @@ class Crudcontroller extends BaseController
 
             if ($user) {
                 // Set user session
-                $session->set('user', $user['id']);
+                $session->set('userId', $user['id']);
                 return redirect()->to('/dashboard-view', null, 'refresh');
             } else {
                 echo('wrong credentials');
@@ -65,7 +65,7 @@ class Crudcontroller extends BaseController
     public function logout()
     {
         $session = \Config\Services::session();
-        $session->remove('user');
+        $session->remove('userId');
         return view('screens/login');
     }
 
@@ -156,10 +156,11 @@ class Crudcontroller extends BaseController
 
         try {
             $userModel->delete($user['id']);
+            // Set the success message in the session
+            session()->setFlashdata('success', 'User deleted successfully.');
         } catch (\ReflectionException $e) {
             return redirect()->back()->with('error', 'An error occurred while deleting user details. Please try again.');
         }
-
-        return view('screens/success');   //success with a success message
+        return redirect()->to('/success', null, 'refresh'); //success with a success message
     }
 }

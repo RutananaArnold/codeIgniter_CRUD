@@ -37,19 +37,23 @@
                 <th>Action</th>
             </thead>
             <tbody>
+            <?php
 
-            <?php foreach ($users as $user): ?>
-                    <tr>
-                        <td></td>
-                        <td><?= esc($user['name']) ?></td>
-                        <td><?= esc($user['gender']) ?> </td>
-                        <td><?= esc($user['age']) ?> </td>
-                        <td><?= esc($user['email']) ?> </td>
-                        <td>
-                            <a href="/edit-user/<?= esc($user['id']) ?>" class="btn btn-outline-warning btn-sm" style="width: 6em;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-                            <a href="/delete-screen/<?= esc($user['id']) ?>" class="btn btn btn-outline-danger btn-outline btn-sm" style="width: 6em;"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
-                        </td>
-                    </tr>
+            // Calculate the starting item number for the current page
+            $startingNumber = ($pager->getCurrentPage() - 1) * $pager->getPerPage() + 1;
+            foreach ($users as $user):
+                ?>
+                <tr>
+                    <td><?= $startingNumber++ ?></td>
+                    <td><?= esc($user['name']) ?></td>
+                    <td><?= esc($user['gender']) ?> </td>
+                    <td><?= esc($user['age']) ?> </td>
+                    <td><?= esc($user['email']) ?> </td>
+                    <td>
+                        <a href="/edit-user/<?= esc($user['id']) ?>" class="btn btn-outline-warning btn-sm" style="width: 6em;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                        <a href="/delete-screen/<?= esc($user['id']) ?>" class="btn btn btn-outline-danger btn-outline btn-sm" style="width: 6em;"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                    </td>
+                </tr>
             <?php endforeach ?>
             </tbody>
         </table>

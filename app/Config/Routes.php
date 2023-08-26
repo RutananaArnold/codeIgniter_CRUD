@@ -3,6 +3,7 @@
 namespace Config;
 use App\Controllers\Crudcontroller;
 use App\Controllers\PageController;
+use App\Controllers\PostsController;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -54,8 +55,11 @@ $routes->post('/delete-user', 'Crudcontroller::deleteUser');    //delete user
 
 $routes->get('/nav-sidebar', 'PageController::sideBar');
 $routes->get('/dashboard-view', 'PageController::showDashboard');
+$routes->get('/success', 'PageController::showSuccess');
 
-
+//posts
+$routes->get('/add-post', 'PostsController::addPost');  //add post
+$routes->get('/view-posts', 'PostsController::index');  //view posts
 /*
  * --------------------------------------------------------------------
  * Additional Routing
