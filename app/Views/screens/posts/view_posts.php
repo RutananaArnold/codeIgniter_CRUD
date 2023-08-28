@@ -33,15 +33,17 @@
             <?php foreach ($posts as $post): ?>
                 <div class="col-md-6">
                     <div class="card mb-4">
-                        <img src="<?= esc($post['image_url']) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
+                        <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?= esc($post['title']) ?></h5>
-                            <p class="card-text"><?= esc($post['content']) ?></p>
+                            <p class="card-text"><?= esc($post['body']) ?></p>
+                            <p class="card-text">Owner: <?= esc($post['ownerName']) ?></p>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
     </div>
+
 
 <?= $this->endSection(); ?>

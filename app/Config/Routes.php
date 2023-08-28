@@ -58,8 +58,12 @@ $routes->get('/dashboard-view', 'PageController::showDashboard');
 $routes->get('/success', 'PageController::showSuccess');
 
 //posts
-$routes->get('/add-post', 'PostsController::addPost');  //add post
-$routes->get('/view-posts', 'PostsController::index');  //view posts
+$routes->get('/add-post', 'PostsController::addPost');  //add post screen
+$routes->post('/upload-post', 'PostsController::uploadPost');  //upload post
+
+$routes->get('/view-posts', 'PostsController::fetchPosts');  //view posts page
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

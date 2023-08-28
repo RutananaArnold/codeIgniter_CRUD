@@ -143,13 +143,13 @@
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/add-post">
-                        <i class="bi bi-circle"></i><span>Add post</span>
+                    <a href="/view-posts">
+                        <i class="bi bi-circle"></i><span>View posts</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/view-posts">
-                        <i class="bi bi-circle"></i><span>View posts</span>
+                    <a href="/add-post">
+                        <i class="bi bi-circle"></i><span>Add post</span>
                     </a>
                 </li>
             </ul>

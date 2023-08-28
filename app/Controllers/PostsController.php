@@ -7,10 +7,6 @@ use Config\Services;
 
 class PostsController extends BaseController
 {
-    public function index()
-    {
-        return view('screens/posts/view_posts');
-    }
 
     public function addPost()
     {
@@ -33,7 +29,7 @@ class PostsController extends BaseController
             $newName = $image->getRandomName();
 
             // Move the uploaded file to the desired directory (e.g., 'writable/uploads')
-            $image->move(ROOTPATH . 'writable/uploads', $newName);
+            $image->move(ROOTPATH . '/public/uploads', $newName);
             $session = \Config\Services::session();
 
             // Save the post data (title, content, and image filename) to a database
@@ -43,7 +39,10 @@ class PostsController extends BaseController
                 'ownerId' => $session->get('userId'),
                 'file'=> $newName
             ];
-            $myPost->insert($data, true);
+            try {
+                $myPost->insert($data, true);
+            } catch (\ReflectionException $e) {
+            }
 
             // Redirect to a success page or a different page
             return redirect()->to('/success')->with('success', 'Post uploaded successfully');
@@ -51,5 +50,33 @@ class PostsController extends BaseController
             // Handle validation errors or invalid image
             return redirect()->back()->withInput()->with('error', 'Invalid image or image size exceeds 2MB');
         }
+    }
+
+    public function fetchPosts()
+    {
+        // Create a shared instance of the model.
+        $postModel = model('MyPost');
+        $allPosts = [
+            'posts' => $postModel->paginate(10),
+            'pager' => $postModel->pager,
+        ];
+
+        // Fetch owner information for each post
+        foreach ($allPosts['posts'] as &$post) {
+            $userId = $post['ownerId'];
+            // Replace 'UserModel' with your actual user model
+            $userModel = model('UserModel');
+            $user = $userModel->find($userId);
+
+            // Add owner information to the post data
+            // Check if the user exists
+            if ($user) {
+                $post['ownerName'] = $user['name']; // Assuming the user has a 'name' field
+            } else {
+                $post['ownerName'] = 'Unknown'; // Set a default value if user not found
+            }
+        }
+
+        return view('screens/posts/view_posts', $allPosts);
     }
 }

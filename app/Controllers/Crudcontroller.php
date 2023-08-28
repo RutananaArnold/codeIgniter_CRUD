@@ -74,7 +74,6 @@ class Crudcontroller extends BaseController
     {
          // Create a shared instance of the model.
          $userModel = model('UserModel');
-        //  dump($userModel);
          $allUsers = [
             'users' => $userModel->paginate(10),
              'pager' => $userModel->pager,
@@ -145,7 +144,8 @@ class Crudcontroller extends BaseController
         return view('screens/delete_user', ['user' => $user]);
     }
 
-    public function deleteUser(){
+    public function deleteUser()
+    {
         $userId = $this->request->getPost('user_id');
         // Create a shared instance of the model.
         $userModel = model('UserModel');
