@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 use \Firebase\JWT\JWT;
 use CodeIgniter\API\ResponseTrait;
 
-class CRUD_API extends BaseController
+class CrudAPI extends BaseController
 {
     use ResponseTrait;
     public function index()
@@ -23,47 +23,6 @@ class CRUD_API extends BaseController
             return $this->fail(['error' => 'Project does not exist'], 404);
         }
         return $this->respond($user,200,"Success");
-    }
-
-    public function login()
-    {
-        $email = $this->request->getVar('email');
-        $password = $this->request->getVar('password');
-
-        $userModel = model('UserModel');
-        $user = $userModel->where('email', $email)->first();
-
-        if(is_null($user)) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
-        }
-
-        $pwd_verify = password_verify($password, $user['password']);
-
-        if(!$pwd_verify) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
-        }
-
-        $key = getenv('JWT_SECRET');
-        $iat = time(); // current timestamp value
-        $exp = $iat + 3600;
-
-        $payload = array(
-            "iss" => "Arnold",
-            "aud" => "Mobile",
-            "sub" => "Bearer token",
-            "iat" => $iat, //Time the JWT issued at
-            "exp" => $exp, // Expiration time of token
-            "email" => $user['email'],
-        );
-
-        $token = JWT::encode($payload, $key, 'HS256');
-
-        $response = [
-            'message' => 'Login Successful',
-            'token' => $token
-        ];
-
-        return $this->respond($response, 200);
     }
 
 
@@ -104,4 +63,41 @@ class CRUD_API extends BaseController
         }
 
     }
+
+    public function login()
+    {
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+
+        $userModel = model('UserModel');
+        $user = $userModel->where('email', $email)->first();
+
+        if(is_null($user)) {
+            return $this->respond(['error' => 'Invalid username or password.'], 401);
+        }
+
+        $key = getenv('JWT_SECRET');
+        $iat = time(); // current timestamp value
+        $exp = $iat + 3600;
+
+        $payload = array(
+            "iss" => "Arnold",
+            "aud" => "Mobile",
+            "sub" => "Bearer token",
+            "iat" => $iat, //Time the JWT issued at
+            "exp" => $exp, // Expiration time of token
+            "email" => $user['email'],
+        );
+
+        $token = JWT::encode($payload, $key, 'HS256');
+
+        $response = [
+            'message' => 'Login Successful',
+            'token' => $token
+        ];
+
+        return $this->respond($response, 200);
+    }
+
+
 }

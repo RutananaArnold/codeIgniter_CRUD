@@ -4,7 +4,7 @@ namespace Config;
 use App\Controllers\Crudcontroller;
 use App\Controllers\PageController;
 use App\Controllers\PostsController;
-use App\Controllers\CRUD_API;
+use App\Controllers\CrudAPI;
 use App\Filters;
 
 // Create a new instance of our RouteCollection class.
@@ -38,10 +38,10 @@ $routes->get('/', 'Crudcontroller::showLogin');
 
 // Auth
 $routes->get('/registration', 'Crudcontroller::index');    //register screen
-$routes->match(['get', 'post'], 'register-user', [Crudcontroller::class, 'save']);  //save user
+$routes->match(['get', 'post'], '/register-user', [Crudcontroller::class, 'save']);  //save user
 
 $routes->get('/login', 'Crudcontroller::showLogin');    //login screen
-$routes->match(['get', 'post'], 'login-user', [Crudcontroller::class, 'login']);  //login user
+$routes->match(['get', 'post'], '/login-user', [Crudcontroller::class, 'login']);  //login user
 
 $routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
@@ -70,9 +70,9 @@ $routes->get('/view-posts', 'PostsController::fetchPosts', ['filter' => 'authMid
 //API'S endpoints
 $routes->group("api", function () {
     $routes = Services::routes();
-    $routes->post("user-registration", "CRUD_API::register");
-    $routes->post("user-login", "CRUD_API::login");
-    $routes->get("users-list", "CRUD_API::index", ['filter' => 'apiauthFilter']);
+    $routes->post('user-registration', 'CrudAPI::register');
+    $routes->post('user-login', 'CrudAPI::login');
+    $routes->get('users-list', 'CrudAPI::index', ['filter' => 'apiAuthFilter']);
 });
 
 /*
