@@ -4,6 +4,8 @@ namespace Config;
 use App\Controllers\Crudcontroller;
 use App\Controllers\PageController;
 use App\Controllers\PostsController;
+use App\Controllers\CRUD_API;
+use App\Filters;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -45,24 +47,33 @@ $routes->get('/logout', 'Crudcontroller::logout');    //logout user
 
 
 // logged in screens
-$routes->get('/users-list', 'Crudcontroller::fetchUsers');    //display registered users
+$routes->get('/users-list', 'Crudcontroller::fetchUsers', ['filter' => 'authMiddleware']);    //display registered users
 
-$routes->get('/edit-user/(:num)', 'Crudcontroller::showEditUser/$1');    //show edit user screen
-$routes->post('/update-user', 'Crudcontroller::updateUser');    //update user details
+$routes->get('/edit-user/(:num)', 'Crudcontroller::showEditUser/$1', ['filter' => 'authMiddleware']);    //show edit user screen
+$routes->post('/update-user', 'Crudcontroller::updateUser', ['filter' => 'authMiddleware']);    //update user details
 
-$routes->get('/delete-screen/(:num)', 'Crudcontroller::showDeletePage/$1');    //show delete user screen
-$routes->post('/delete-user', 'Crudcontroller::deleteUser');    //delete user
+$routes->get('/delete-screen/(:num)', 'Crudcontroller::showDeletePage/$1', ['filter' => 'authMiddleware']);    //show delete user screen
+$routes->post('/delete-user', 'Crudcontroller::deleteUser', ['filter' => 'authMiddleware']);    //delete user
 
-$routes->get('/nav-sidebar', 'PageController::sideBar');
-$routes->get('/dashboard-view', 'PageController::showDashboard');
-$routes->get('/success', 'PageController::showSuccess');
+$routes->get('/nav-sidebar', 'PageController::sideBar', ['filter' => 'authMiddleware']);
+$routes->get('/dashboard-view', 'PageController::showDashboard', ['filter' => 'authMiddleware']);
+$routes->get('/success', 'PageController::showSuccess', ['filter' => 'authMiddleware']);
 
 //posts
-$routes->get('/add-post', 'PostsController::addPost');  //add post screen
-$routes->post('/upload-post', 'PostsController::uploadPost');  //upload post
+$routes->get('/add-post', 'PostsController::addPost', ['filter' => 'authMiddleware']);  //add post screen
+$routes->post('/upload-post', 'PostsController::uploadPost', ['filter' => 'authMiddleware']);  //upload post
 
-$routes->get('/view-posts', 'PostsController::fetchPosts');  //view posts page
+$routes->get('/view-posts', 'PostsController::fetchPosts', ['filter' => 'authMiddleware']);  //view posts page
 
+
+
+//API'S endpoints
+$routes->group("api", function () {
+    $routes = Services::routes();
+    $routes->post("user-registration", "CRUD_API::register");
+    $routes->post("user-login", "CRUD_API::login");
+    $routes->get("users-list", "CRUD_API::index", ['filter' => 'apiauthFilter']);
+});
 
 /*
  * --------------------------------------------------------------------

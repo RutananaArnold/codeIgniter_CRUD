@@ -24,7 +24,10 @@
                 <i style="color: green; font-size: 100px;" class="checkmark">✓</i>
             </div>
             <div class="text-center">
-                <h1>User Deleted successfully</h1>
+                <?php if (session()->has('success')) : ?>
+
+                        <h1> <?= session('success') ?></h1>
+                <?php endif; ?>
             </div>
         </div>
     </div>

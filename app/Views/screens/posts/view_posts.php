@@ -26,24 +26,77 @@
     </div>
 <?php endif; ?>
 
+<?php $pager = \Config\Services::pager(); ?>
 
-    <div class="container mt-5">
-        <div class="row">
-            <!-- Loop through each post -->
-            <?php foreach ($posts as $post): ?>
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= esc($post['title']) ?></h5>
-                            <p class="card-text"><?= esc($post['body']) ?></p>
-                            <p class="card-text">Owner: <?= esc($post['ownerName']) ?></p>
-                        </div>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Loop through each post -->
+        <?php foreach ($posts as $post): ?>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= esc($post['title']) ?></h5>
+                        <p class="card-text"><?= esc($post['body']) ?></p>
+                        <p class="owner-text">Owner: <?= esc($post['ownerName']) ?></p>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
+</div>
 
+<?= $pager->links() ?>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-img-top {
+        max-height: 300px;
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .owner-text {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .page-item {
+        margin: 0 5px;
+    }
+</style>
 
 <?= $this->endSection(); ?>
