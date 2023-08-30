@@ -1,7 +1,7 @@
 <?php
 
 namespace Config;
-use App\Controllers\Crudcontroller;
+use App\Controllers\CrudController;
 use App\Controllers\PageController;
 use App\Controllers\PostsController;
 use App\Controllers\CrudAPI;
@@ -34,26 +34,26 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Crudcontroller::showLogin');
+$routes->get('/', 'CrudController::showLogin');
 
 // Auth
-$routes->get('/registration', 'Crudcontroller::index');    //register screen
-$routes->match(['get', 'post'], '/register-user', [Crudcontroller::class, 'save']);  //save user
+$routes->get('/registration', 'CrudController::index');    //register screen
+$routes->match(['get', 'post'], '/register-user', [CrudController::class, 'save']);  //save user
 
-$routes->get('/login', 'Crudcontroller::showLogin');    //login screen
-$routes->match(['get', 'post'], '/login-user', [Crudcontroller::class, 'login']);  //login user
+$routes->get('/login', 'CrudController::showLogin');    //login screen
+$routes->match(['get', 'post'], '/login-user', [CrudController::class, 'login']);  //login user
 
-$routes->get('/logout', 'Crudcontroller::logout');    //logout user
+$routes->get('/logout', 'CrudController::logout');    //logout user
 
 
 // logged in screens
-$routes->get('/users-list', 'Crudcontroller::fetchUsers', ['filter' => 'authMiddleware']);    //display registered users
+$routes->get('/users-list', 'CrudController::fetchUsers', ['filter' => 'authMiddleware']);    //display registered users
 
-$routes->get('/edit-user/(:num)', 'Crudcontroller::showEditUser/$1', ['filter' => 'authMiddleware']);    //show edit user screen
-$routes->post('/update-user', 'Crudcontroller::updateUser', ['filter' => 'authMiddleware']);    //update user details
+$routes->get('/edit-user/(:num)', 'CrudController::showEditUser/$1', ['filter' => 'authMiddleware']);    //show edit user screen
+$routes->post('/update-user', 'CrudController::updateUser', ['filter' => 'authMiddleware']);    //update user details
 
-$routes->get('/delete-screen/(:num)', 'Crudcontroller::showDeletePage/$1', ['filter' => 'authMiddleware']);    //show delete user screen
-$routes->post('/delete-user', 'Crudcontroller::deleteUser', ['filter' => 'authMiddleware']);    //delete user
+$routes->get('/delete-screen/(:num)', 'CrudController::showDeletePage/$1', ['filter' => 'authMiddleware']);    //show delete user screen
+$routes->post('/delete-user', 'CrudController::deleteUser', ['filter' => 'authMiddleware']);    //delete user
 
 $routes->get('/nav-sidebar', 'PageController::sideBar', ['filter' => 'authMiddleware']);
 $routes->get('/dashboard-view', 'PageController::showDashboard', ['filter' => 'authMiddleware']);
@@ -70,7 +70,7 @@ $routes->get('/view-posts', 'PostsController::fetchPosts', ['filter' => 'authMid
 //API'S endpoints
 $routes->group("api", function () {
     $routes = Services::routes();
-    $routes->post('user-registration', 'CrudAPI::register');
+    $routes->post('user-registration', [CrudAPI::class, 'register']);
     $routes->post('user-login', 'CrudAPI::login');
     $routes->get('users-list', 'CrudAPI::index', ['filter' => 'apiAuthFilter']);
 });

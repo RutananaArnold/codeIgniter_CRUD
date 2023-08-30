@@ -33,7 +33,7 @@ class CrudAPI extends BaseController
             'gender' => ['rules' => 'required'],
             'age' => ['rules' => 'required'],
             'email' => ['rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]'],
-            'password' => ['rules' => 'required|min_length[8]|max_length[255]'],
+            'password' => ['rules' => 'required|min_length[6]|max_length[255]'],
             'confirm_password'  => [ 'label' => 'confirm password', 'rules' => 'matches[password]']
         ];
 

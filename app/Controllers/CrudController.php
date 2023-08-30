@@ -3,7 +3,7 @@
 namespace App\Controllers;
 use Config\Services;
 
-class Crudcontroller extends BaseController
+class CrudController extends BaseController
 {
 
     public function index(): string
