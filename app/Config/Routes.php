@@ -2,8 +2,6 @@
 
 namespace Config;
 use App\Controllers\CrudController;
-use App\Controllers\PageController;
-use App\Controllers\PostsController;
 use App\Controllers\CrudAPI;
 use App\Filters;
 

@@ -10,8 +10,20 @@ class CrudAPI extends BaseController
 {
     use ResponseTrait;
     public function index()
-    {   $userModel = model('UserModel');
-        return $this->respond(['users' => $userModel->findAll()], 200, 'Success');
+    {
+        $userModel = model('UserModel');
+        $pager = \Config\Services::pager();
+        $perPage = 10;
+        $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
+
+        // Fetch data with pagination
+        $users = $userModel->paginate($perPage,'API_pagination', $currentPage);
+
+        if(is_null($users)){
+            return $this->respond([],404, "No users found");
+        }
+
+        return $this->respond(['users' => $users], 200, 'Success');
     }
 
     public function show($userId = null)
@@ -20,7 +32,7 @@ class CrudAPI extends BaseController
         $user = $userModel->find('userId');
 
         if(is_null($user)){
-            return $this->fail(['error' => 'Project does not exist'], 404);
+            return $this->fail(['error' => 'User does not exist'], 404);
         }
         return $this->respond($user,200,"Success");
     }
