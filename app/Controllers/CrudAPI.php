@@ -20,7 +20,7 @@ class CrudAPI extends BaseController
         $users = $userModel->paginate($perPage,'API_pagination', $currentPage);
 
         if(is_null($users)){
-            return $this->respond([],404, "No users found");
+            return $this->respond([],200, "No users found");
         }
 
         return $this->respond(['users' => $users], 200, 'Success');
