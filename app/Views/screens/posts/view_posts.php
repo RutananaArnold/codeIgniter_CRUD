@@ -34,11 +34,27 @@
         <?php foreach ($posts as $post): ?>
             <div class="col-md-6">
                 <div class="card mb-4">
+                    <div class="card-header">
+                        <img height="20px" src="<?= base_url('person.png') ?>" class="user-avatar" alt="<?= esc($post['ownerName']) ?>">
+                        <span class="user-name"><?= esc($post['ownerName']) ?></span>
+                    </div>
                     <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
                     <div class="card-body">
                         <h5 class="card-title"><?= esc($post['title']) ?></h5>
                         <p class="card-text"><?= esc($post['body']) ?></p>
-                        <p class="owner-text">Owner: <?= esc($post['ownerName']) ?></p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-4">
+                                <a href="#" class="btn btn-sm btn-primary">Like</a>
+                            </div>
+                            <div class="col-4">
+                                <a href="#" class="btn btn-sm btn-info">Comment</a>
+                            </div>
+                            <div class="col-4">
+                                <a href="#" class="btn btn-sm btn-secondary">Share</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

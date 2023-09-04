@@ -8,6 +8,7 @@ use Config\Services;
 class PostsController extends BaseController
 {
 
+
     public function addPost()
     {
         return view('screens/posts/add_post');
@@ -56,26 +57,12 @@ class PostsController extends BaseController
     {
         // Create a shared instance of the model.
         $postModel = model('MyPost');
+
+        $posts = $postModel->select('*, users.name AS ownerName')->join('users','users.id = posts.ownerId');
         $allPosts = [
-            'posts' => $postModel->paginate(10),
+            'posts' => $posts->paginate(10),
             'pager' => $postModel->pager,
         ];
-
-        // Fetch owner information for each post
-        foreach ($allPosts['posts'] as &$post) {
-            $userId = $post['ownerId'];
-            // Replace 'UserModel' with your actual user model
-            $userModel = model('UserModel');
-            $user = $userModel->find($userId);
-
-            // Add owner information to the post data
-            // Check if the user exists
-            if ($user) {
-                $post['ownerName'] = $user['name']; // Assuming the user has a 'name' field
-            } else {
-                $post['ownerName'] = 'Unknown'; // Set a default value if user not found
-            }
-        }
 
         return view('screens/posts/view_posts', $allPosts);
     }
