@@ -54,7 +54,7 @@ class CrudController extends BaseController
             if ($user) {
                 // Set user session
                 $session->set('userId', $user['id']);
-                return redirect()->to('/dashboard-view', null, 'refresh');
+                return redirect()->to('/dashboard-view', null, 'auto')->with('loggedInUserName', $user['name']);
             } else {
                 echo('wrong credentials');
                 return view('screens/login');

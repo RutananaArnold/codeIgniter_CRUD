@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard - Admin Template</title>
+    <title>Dashboard - Admin</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -49,14 +49,17 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-                </a><!-- End Profile Iamge Icon -->
+                    <img src="<?= base_url('person.png') ?>" alt="Profile" class="rounded-circle">
+                    <?php
+                    $loggedInUserName = session('loggedInUserName');
+                    ?>
+                    <span class="d-none d-md-block dropdown-toggle ps-2"><?= $loggedInUserName ?></span>
+                </a><!-- End Profile Image Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <h6><?= $loggedInUserName ?></h6>
+                        <span>Admin</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

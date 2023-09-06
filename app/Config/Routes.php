@@ -71,6 +71,9 @@ $routes->group("api", function () {
     $routes->post('user-registration', [CrudAPI::class, 'register']);
     $routes->post('user-login', 'CrudAPI::login');
     $routes->get('users-list', 'CrudAPI::index', ['filter' => 'apiAuthFilter']);
+    $routes->post('user-detail',  [CrudAPI::class, 'showUserDetail'], ['filter' => 'apiAuthFilter']);
+    $routes->post('update-user-detail', 'CrudAPI::updateUserDetail', ['filter' => 'apiAuthFilter']);
+    $routes->post('add-new-post', 'CrudAPI::addNewPost', ['filter' => 'apiAuthFilter']);
 });
 
 /*

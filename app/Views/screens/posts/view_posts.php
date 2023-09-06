@@ -38,7 +38,14 @@
                         <img height="20px" src="<?= base_url('person.png') ?>" class="user-avatar" alt="<?= esc($post['ownerName']) ?>">
                         <span class="user-name"><?= esc($post['ownerName']) ?></span>
                     </div>
-                    <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
+                    <?php
+                    $fileExtension = pathinfo($post['file'], PATHINFO_EXTENSION);
+                    if (in_array($fileExtension, ['mp4', 'mpeg'])):
+                        ?>
+                        <video controls class="card-img-top" src="<?= base_url('uploads/' . esc($post['file'])) ?>" alt="<?= esc($post['title']) ?>"></video>
+                    <?php else: ?>
+                        <img src="<?= base_url('uploads/' . esc($post['file'])) ?>" class="card-img-top" alt="<?= esc($post['title']) ?>">
+                    <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title"><?= esc($post['title']) ?></h5>
                         <p class="card-text"><?= esc($post['body']) ?></p>
@@ -46,10 +53,10 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-4">
-                                <a href="#" class="btn btn-sm btn-primary">Like</a>
+                                <a href="#" class="btn btn-sm btn-primary">0 Likes</a>
                             </div>
                             <div class="col-4">
-                                <a href="#" class="btn btn-sm btn-info">Comment</a>
+                                <a href="#" class="btn btn-sm btn-info">0 Comment</a>
                             </div>
                             <div class="col-4">
                                 <a href="#" class="btn btn-sm btn-secondary">Share</a>
