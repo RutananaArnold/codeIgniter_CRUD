@@ -58,7 +58,7 @@ class PostsController extends BaseController
         // Create a shared instance of the model.
         $postModel = model('MyPost');
 
-        $posts = $postModel->select('*, users.name AS ownerName')->join('users','users.id = posts.ownerId');
+        $posts = $postModel->select('posts.*, users.name AS ownerName')->join('users','users.id = posts.ownerId');
         $allPosts = [
             'posts' => $posts->paginate(10),
             'pager' => $postModel->pager,

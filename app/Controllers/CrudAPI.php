@@ -12,7 +12,6 @@ class CrudAPI extends BaseController
     public function index()
     {
         $userModel = model('UserModel');
-        $pager = \Config\Services::pager();
         $perPage = 10;
         $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
 
@@ -222,7 +221,19 @@ class CrudAPI extends BaseController
         return $this->respond($response, '200');// Return JSON response
     }
 
-    public function displayPosts(){
+    public function displayPosts()
+    {
+        // Create a shared instance of the model.
+        $postModel = model('MyPost');
+        $perPage = $this->request->getVar('perPage') ? $this->request->getVar('perPage') : 10;
+        $page = $this->request->getVar('page') ? $this->request->getVar('page') : 1;
 
+        $posts = $postModel->select('posts.*, users.name AS ownerName')->join('users' ,'users.id = posts.ownerId')->paginate($perPage, 'default', $page);
+
+        if(is_null($posts)){
+            return $this->respond([],200, "No posts found");
+        }
+
+        return $this->respond(['posts' => $posts],'200', 'Success');
     }
 }
